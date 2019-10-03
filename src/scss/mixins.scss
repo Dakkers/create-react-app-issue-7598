@@ -1,0 +1,9 @@
+@mixin next-gen-image ($file-name, $fallback-ext) {
+  .webp-supported & {
+    background-image: url('#{$file-name}.webp');
+  }
+
+  .webp-not-supported & {
+    background-image: url('#{$file-name}.#{$fallback-ext}');
+  }
+}

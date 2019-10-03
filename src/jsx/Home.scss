@@ -1,0 +1,16 @@
+@import './../scss/mixins';
+
+.donkey-kong {
+  // This works:
+  // background-image: url('./img/dk-kart.jpg');
+
+  // This compiles, but the image isn't found:
+  // @include next-gen-image('/img/dk-kart', 'jpg');
+
+  // This SHOULD work; it works on version 3.0.x.
+  // However, it fails to compile.
+  // @include next-gen-image('./img/dk-kart', 'jpg');
+
+  height: 300px;
+  width: 300px;
+}
