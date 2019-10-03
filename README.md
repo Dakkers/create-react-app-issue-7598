@@ -1,68 +1,61 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This repo exists to reproduce a bug introduced with version 3.1.x of create-react-app. The issue is that mixins (which make use of a path) imported from a different file do not honour the path of the file that uses them.
 
-## Available Scripts
+# "Original" code
+This code reflects the directory structure of the codebase where I experienced the problem. (This does NOT work with 3.1.x of create-react-app, but it does with 3.0.x.)
 
-In the project directory, you can run:
+```scss
+// /src/scss/mixins.scss
 
-### `yarn start`
+@mixin next-gen-image ($file-name, $fallback-ext) {
+  .webp-supported & {
+    background-image: url('#{$file-name}.webp');
+  }
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+  .webp-not-supported & {
+    background-image: url('#{$file-name}.#{$fallback-ext}');
+  }
+}
+```
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+```css
+// /src/jsx/Home.scss
 
-### `yarn test`
+@import './../scss/mixins';
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+.donkey-kong {
+  @include next-gen-image('img/dk-kart', 'jpg');
+  height: 300px;
+  width: 300px;
+}
 
-### `yarn build`
+```
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+with the image located at `/src/jsx/img/dk-kart.jpg`.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+## Expected Behaviour
+Should show DK.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+![Expected Behaviour](readme-images/expected.png)
 
-### `yarn eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Actual Behaviour
+Fails to compile.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+![Error Overlay](readme-images/error00.png)
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+![Stack Trace](readme-images/error01.png)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+# Other attempts
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Using absolute paths allows the code to compile, but the element does not have a background image:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```scss
+@include next-gen-image('/jsx/img/dk-kart', 'jpg');
+```
 
-### Code Splitting
+OR
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+```scss
+@include next-gen-image('/jsx/img/dk-kart', 'jpg');
+```
