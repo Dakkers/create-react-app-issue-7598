@@ -3,7 +3,7 @@ This repo exists to reproduce a bug introduced with version 3.1.x of create-reac
 **It is still broken with version 3.3.1, which claims to have fixed it.**
 
 # "Original" code
-This code reflects the directory structure of the codebase where I experienced the problem. (This does NOT work with 3.1.x of create-react-app, but it does with 3.0.x.)
+This code reflects the directory structure of the codebase where I experienced the problem. (This does NOT work with 3.3.x of create-react-app, but it does with 3.0.x.)
 
 ```scss
 // /src/scss/mixins.scss
@@ -19,7 +19,7 @@ This code reflects the directory structure of the codebase where I experienced t
 }
 ```
 
-```css
+```scss
 // /src/jsx/Home.scss
 
 @import './../scss/mixins';
@@ -43,9 +43,7 @@ Should show DK.
 ## Actual Behaviour
 Fails to compile.
 
-![Error Overlay](readme-images/error00.png)
-
-![Stack Trace](readme-images/error01.png)
+![Error Overlay and Stack Trace](readme-images/error00.png)
 
 
 # Other attempts
