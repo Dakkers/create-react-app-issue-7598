@@ -1,5 +1,7 @@
 This repo exists to reproduce a bug introduced with version 3.1.x of create-react-app. The issue is that mixins (which make use of a path) imported from a different file do not honour the path of the file that uses them.
 
+**It is still broken with version 3.3.1, which claims to have fixed it.**
+
 # "Original" code
 This code reflects the directory structure of the codebase where I experienced the problem. (This does NOT work with 3.1.x of create-react-app, but it does with 3.0.x.)
 
